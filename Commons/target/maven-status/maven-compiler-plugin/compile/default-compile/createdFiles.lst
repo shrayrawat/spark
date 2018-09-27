@@ -1,0 +1,6 @@
+com/commons/model/BatchRecord.class
+com/commons/model/OutputRecordData.class
+com/commons/util/GeoHashUtil.class
+com/commons/model/DriverPing.class
+com/commons/model/TrafficData.class
+com/commons/util/WeatherUtil.class

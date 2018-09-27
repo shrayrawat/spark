@@ -1,0 +1,22 @@
+2018-09-25 13:34:33 [main] INFO  B.B.BoxFileHandlingService - User Login: [AutomationUser_661829_ZFOkBOd4x3@boxdevedition.com]
+2018-09-25 13:34:34 [main] INFO  B.B.BoxFileHandlingService - Printing content of folder [All Files]
+2018-09-25 13:34:34 [main] INFO  B.B.BoxFileHandlingService - 	Folder Name [Test_Folder]
+2018-09-25 13:34:34 [main] INFO  B.B.BoxFileHandlingService -  --- DONE --- 
+2018-09-25 13:34:35 [main] INFO  B.B.BoxFileHandlingService - Printing content of folder [Test_Folder]
+2018-09-25 13:34:35 [main] INFO  B.B.BoxFileHandlingService - 	File Name [84910019_02ye5bl0_config.json]
+2018-09-25 13:34:35 [main] INFO  B.B.BoxFileHandlingService - 	File Name [batch_kafka_output]
+2018-09-25 13:34:35 [main] INFO  B.B.BoxFileHandlingService - 	File Name [one_set]
+2018-09-25 13:34:35 [main] INFO  B.B.BoxFileHandlingService -  --- DONE --- 
+2018-09-25 13:34:36 [main] INFO  B.B.BoxFileHandlingService - Downloading file 84910019_02ye5bl0_config.json
+2018-09-25 13:34:39 [main] INFO  B.B.BoxFileHandlingService - Downloading completed
+2018-09-25 13:37:26 [main] INFO  B.B.BoxFileHandlingService - User Login: [AutomationUser_661829_ZFOkBOd4x3@boxdevedition.com]
+2018-09-25 13:37:27 [main] INFO  B.B.BoxFileHandlingService - Printing content of folder [All Files]
+2018-09-25 13:37:27 [main] INFO  B.B.BoxFileHandlingService - 	Folder Name [Test_Folder]
+2018-09-25 13:37:27 [main] INFO  B.B.BoxFileHandlingService -  --- DONE --- 
+2018-09-25 13:37:28 [main] INFO  B.B.BoxFileHandlingService - Printing content of folder [Test_Folder]
+2018-09-25 13:37:28 [main] INFO  B.B.BoxFileHandlingService - 	File Name [84910019_02ye5bl0_config.json]
+2018-09-25 13:37:28 [main] INFO  B.B.BoxFileHandlingService - 	File Name [batch_kafka_output]
+2018-09-25 13:37:28 [main] INFO  B.B.BoxFileHandlingService - 	File Name [one_set]
+2018-09-25 13:37:28 [main] INFO  B.B.BoxFileHandlingService -  --- DONE --- 
+2018-09-25 13:37:29 [main] INFO  B.B.BoxFileHandlingService - Downloading file 84910019_02ye5bl0_config.json
+2018-09-25 13:37:32 [main] INFO  B.B.BoxFileHandlingService - Downloading completed

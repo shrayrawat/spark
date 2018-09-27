@@ -1,0 +1,58 @@
+2018-09-24 10:40:39 [main] INFO  B.B.BoxFileHandlingService - User Login: [AutomationUser_661829_ZFOkBOd4x3@boxdevedition.com]
+2018-09-24 10:40:39 [main] INFO  B.B.BoxFileHandlingService - Printing content of folder [All Files]
+2018-09-24 10:40:40 [main] INFO  B.B.BoxFileHandlingService -  --- DONE --- 
+2018-09-24 10:42:58 [main] INFO  B.B.BoxFileHandlingService - User Login: [AutomationUser_661829_ZFOkBOd4x3@boxdevedition.com]
+2018-09-24 10:42:58 [main] INFO  B.B.BoxFileHandlingService - Printing content of folder [All Files]
+2018-09-24 10:42:59 [main] INFO  B.B.BoxFileHandlingService -  --- DONE --- 
+2018-09-24 10:47:29 [main] INFO  B.B.BoxFileHandlingService - User Login: [AutomationUser_661829_ZFOkBOd4x3@boxdevedition.com]
+2018-09-24 10:47:30 [main] INFO  B.B.BoxFileHandlingService - Printing content of folder [All Files]
+2018-09-24 10:47:30 [main] INFO  B.B.BoxFileHandlingService - 	Folder Name [Test_Folder]
+2018-09-24 10:47:30 [main] INFO  B.B.BoxFileHandlingService -  --- DONE --- 
+2018-09-24 10:51:44 [main] INFO  B.B.BoxFileHandlingService - User Login: [AutomationUser_661829_ZFOkBOd4x3@boxdevedition.com]
+2018-09-24 10:51:44 [main] INFO  B.B.BoxFileHandlingService - Printing content of folder [All Files]
+2018-09-24 10:51:45 [main] INFO  B.B.BoxFileHandlingService - 	Folder Name [Test_Folder]
+2018-09-24 10:51:45 [main] INFO  B.B.BoxFileHandlingService -  --- DONE --- 
+2018-09-24 10:51:45 [main] INFO  B.B.BoxFileHandlingService - Printing content of folder [Test_Folder]
+2018-09-24 10:51:46 [main] INFO  B.B.BoxFileHandlingService - 	File Name [batch_kafka_output]
+2018-09-24 10:51:46 [main] INFO  B.B.BoxFileHandlingService -  --- DONE --- 
+2018-09-24 10:51:46 [main] INFO  B.B.BoxFileHandlingService - Uploading file /Users/sgorai/Downloads/IMG_1713.jpg at folder 53906665055
+2018-09-24 10:52:36 [main] INFO  B.B.BoxFileHandlingService - User Login: [AutomationUser_661829_ZFOkBOd4x3@boxdevedition.com]
+2018-09-24 10:52:36 [main] INFO  B.B.BoxFileHandlingService - Printing content of folder [All Files]
+2018-09-24 10:52:37 [main] INFO  B.B.BoxFileHandlingService - 	Folder Name [Test_Folder]
+2018-09-24 10:52:37 [main] INFO  B.B.BoxFileHandlingService -  --- DONE --- 
+2018-09-24 10:52:37 [main] INFO  B.B.BoxFileHandlingService - Printing content of folder [Test_Folder]
+2018-09-24 10:52:38 [main] INFO  B.B.BoxFileHandlingService - 	File Name [batch_kafka_output]
+2018-09-24 10:52:38 [main] INFO  B.B.BoxFileHandlingService -  --- DONE --- 
+2018-09-24 10:52:38 [main] INFO  B.B.BoxFileHandlingService - Uploading file /Users/sgorai/Downloads/one_set at folder 53906665055
+2018-09-24 10:53:09 [main] INFO  B.B.BoxFileHandlingService - User Login: [AutomationUser_661829_ZFOkBOd4x3@boxdevedition.com]
+2018-09-24 10:53:11 [main] INFO  B.B.BoxFileHandlingService - Printing content of folder [All Files]
+2018-09-24 10:53:11 [main] INFO  B.B.BoxFileHandlingService - 	Folder Name [Test_Folder]
+2018-09-24 10:53:11 [main] INFO  B.B.BoxFileHandlingService -  --- DONE --- 
+2018-09-24 10:53:12 [main] INFO  B.B.BoxFileHandlingService - Printing content of folder [Test_Folder]
+2018-09-24 10:53:12 [main] INFO  B.B.BoxFileHandlingService - 	File Name [batch_kafka_output]
+2018-09-24 10:53:12 [main] INFO  B.B.BoxFileHandlingService -  --- DONE --- 
+2018-09-24 10:53:12 [main] INFO  B.B.BoxFileHandlingService - Uploading file /Users/srawat1/Downloads/one_set at folder 53906665055
+2018-09-24 10:53:13 [main] INFO  B.B.BoxFileHandlingService - Progress [0.0%]
+2018-09-24 10:53:13 [main] INFO  B.B.BoxFileHandlingService - Progress [100.0%]
+2018-09-24 10:53:15 [main] INFO  B.B.BoxFileHandlingService - Uploading file completed
+2018-09-24 10:56:25 [main] INFO  B.B.BoxFileHandlingService - User Login: [AutomationUser_661829_ZFOkBOd4x3@boxdevedition.com]
+2018-09-24 10:56:29 [main] INFO  B.B.BoxFileHandlingService - Printing content of folder [All Files]
+2018-09-24 10:56:29 [main] INFO  B.B.BoxFileHandlingService - 	Folder Name [Test_Folder]
+2018-09-24 10:56:29 [main] INFO  B.B.BoxFileHandlingService -  --- DONE --- 
+2018-09-24 10:56:31 [main] INFO  B.B.BoxFileHandlingService - Printing content of folder [Test_Folder]
+2018-09-24 10:56:32 [main] INFO  B.B.BoxFileHandlingService - 	File Name [batch_kafka_output]
+2018-09-24 10:56:32 [main] INFO  B.B.BoxFileHandlingService - 	File Name [one_set]
+2018-09-24 10:56:32 [main] INFO  B.B.BoxFileHandlingService -  --- DONE --- 
+2018-09-24 10:58:02 [main] INFO  B.B.BoxFileHandlingService - User Login: [AutomationUser_661829_ZFOkBOd4x3@boxdevedition.com]
+2018-09-24 10:58:02 [main] INFO  B.B.BoxFileHandlingService - Printing content of folder [All Files]
+2018-09-24 10:58:03 [main] INFO  B.B.BoxFileHandlingService - 	Folder Name [Test_Folder]
+2018-09-24 10:58:03 [main] INFO  B.B.BoxFileHandlingService -  --- DONE --- 
+2018-09-24 10:58:03 [main] INFO  B.B.BoxFileHandlingService - Printing content of folder [Test_Folder]
+2018-09-24 10:58:04 [main] INFO  B.B.BoxFileHandlingService - 	File Name [batch_kafka_output]
+2018-09-24 10:58:04 [main] INFO  B.B.BoxFileHandlingService - 	File Name [one_set]
+2018-09-24 10:58:04 [main] INFO  B.B.BoxFileHandlingService -  --- DONE --- 
+2018-09-24 10:58:07 [main] INFO  B.B.BoxFileHandlingService - Uploading file /Users/srawat1/Downloads/84910019_02ye5bl0_config.json at folder 53906665055
+2018-09-24 10:58:08 [main] INFO  B.B.BoxFileHandlingService - Progress [100.0%]
+2018-09-24 10:58:09 [main] INFO  B.B.BoxFileHandlingService - Uploading file completed
+2018-09-24 10:58:23 [main] INFO  B.B.BoxFileHandlingService - Downloading file 84910019_02ye5bl0_config.json
+2018-09-24 10:58:26 [main] INFO  B.B.BoxFileHandlingService - Downloading completed

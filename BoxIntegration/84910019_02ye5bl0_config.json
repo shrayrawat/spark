@@ -1,0 +1,12 @@
+{
+  "boxAppSettings": {
+    "clientID": "270p3wu0tlneln7npesvf9vvscmquk1l",
+    "clientSecret": "lhSBqI7h047uGn6YXt738XyUDAuCZBnm",
+    "appAuth": {
+      "publicKeyID": "02ye5bl0",
+      "privateKey": "-----BEGIN ENCRYPTED PRIVATE KEY-----\nMIIFDjBABgkqhkiG9w0BBQ0wMzAbBgkqhkiG9w0BBQwwDgQI4ihPSrEtgGACAggA\nMBQGCCqGSIb3DQMHBAipwQGmFuorygSCBMhjegRFoVsCTBQFbFnzLsGGtkZIlqfq\n/AOQ7TU29B6I9Ub9ILWo8vloSI/of0vKiejrAOP2iO8btvEeNFmZz4ZC2mH37PCF\nITyLaurSPCqwEXznt5+xq2iFPm8lWlOwmrAv5ykRkdW8YDL+r5HuPvo48h5O6E0B\n5dd8NgTeyidrVqXbYb8rco+ors/plPPkolznt/y1bwsnGQb60vtomSYzbwXCm8sZ\npbTnJsk5Bv9gEpBL8PMgCpdZfd0QqZ/GHlaBsKn2s1RfMm+DpKG+cyjhwOj/XQe0\nPgwqcKgmgRKX8UVvzepEqiLdYZn4hb89VkOCcRdEa3ugwcTt1PGhR53A2xm98b/c\nYlyiCank/uKwNMAPisVRjYHfzUQ6OiKO/Sicf94Np011aFhM8f0Zc7GcIowD+bfR\nrUznwIMRolAekycMtSMqyo+D5o9ndNTOCfP/sg3NNnIevNzwqxwvZBflsYLvdhPu\nIFFY0YqYD1vTmRvjSZ7eZB9FzcmN3S9Los5ERi82I8fiNDTrueNKQx1pSW1r7gif\nTnSrejSX7Tl3JZhoyVHR5NQcOPzPG3FoI6LnfZBVp+MfZ06gyGmf/G4LXlLsQXM3\nmaeXSYQTGP0uJiiAGG2OnrtyPiDLghjkLWuYPnTLGk1LdYxtkhXViQQd48Qa02ym\nFs25HyQ1Jxf3N3MUxuFn2ih8PHzjm7S/Fk/EpuEnpSTnyp3UzAWcUAu24frooPti\n+vNz/wk9lvCKMXH9I2Ha8+MU2/T60WezLottoCgYjVn7XXgvHtI2CsvylS0HM0yX\ngNgetpE5uCIMfZBEKoXuSNQlnppNaVHd5W7wy/Ho9lm1oYIB4Ts2rwyGB/fvAzuI\nHUBxfoEZH26Pdy2M6i3wajRSza2Gpg6FhfmP/CIJCynFkv42KoAg1x1XtmynTi/G\nF2lCC1PdoOxzpcZ8PxxwwvF4Cr0iGA2222J01iLnbgQTONmxiy4F3dTvhskQ+Xxg\nX52qi3lxbgc/HLFm0Wwlsnx5m1oe0cUGQTjR7fnnbJ8K+WSinakuPim+cSa1zCmj\nT06RcACC/TyVwwtqR3HKjI1qU2NsfXmUhWLW6ygwFbiz8XCV0MNwtg4ogoW3sF8O\nkxBf94AI/fH5yBnkrwwCagK/I7FHhIVM1ASKd/7RKbVFOCouaKJYpreyou8RGMqx\ng2FX7RCkkzYp4MIRged+dr3IsKiUJMwYFCVgzCVGEcnSDGONnu451KJsHQLIvteZ\nM28n3f6vvZs4ecHp3IWBdduhXo9sFlWEIqhPKmcBoN4KK51v5mp1tXMfjP0UQKJI\nLXcyMhhAviyd2SoTJDT8gwrYW/FtY6Vxc+nXoGBaa8eKoww4wnmjyxGiYRRgBXJx\nbVEdGGwZ8JsXNp+jAxC+0O2U2UFb9p1lhOO2WQM80Sh1jLl4K6ibaXg4uuzZF/y7\ne/89bKBmNoMT4QUP+U90oxQSFfRaWFn8Qkj7WvCfgSy8tAggJ6IU/X1ZWnL6A1w0\nkDzlV9+mLtVRNVHFIwRRJ4AvQMaZ8YIJPNKc+z5O5BdwHtzCNUTvKaC6+aDdZ3cg\nED4hOEDTAJFiG+a98iE3krqq9J4dUZ0z4/k6L2SmVZmLCjwmYz1JDWla8mbN/ck3\ny3A=\n-----END ENCRYPTED PRIVATE KEY-----\n",
+      "passphrase": "e82efa9c4964337dcaeadae3e8ee8ed5"
+    }
+  },
+  "enterpriseID": "84910019"
+}
