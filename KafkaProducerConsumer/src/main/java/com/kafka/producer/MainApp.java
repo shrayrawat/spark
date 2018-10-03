@@ -20,6 +20,7 @@ public class MainApp {
 			}
 		});
 		sparkStreamingThread.start();
+	//
 		new DemandKafkaProducer().run();
 
 	}

@@ -7,7 +7,7 @@ public class BatchRecord {
 	@JsonProperty
 	private String geohash;
 	@JsonProperty
-	private double timestamp;
+	private String timestamp;
 	@JsonProperty
 	private long supply;
 	@JsonProperty
@@ -15,7 +15,7 @@ public class BatchRecord {
 	@JsonProperty
 	private String weather;
 
-	public BatchRecord(String geohash, double timestamp, long supply, long demand, String weather) {
+	public BatchRecord(String geohash, String timestamp, long supply, long demand, String weather) {
 		this.geohash = geohash;
 		this.timestamp = timestamp;
 		this.supply = supply;
@@ -31,11 +31,11 @@ public class BatchRecord {
 		this.geohash = geohash;
 	}
 
-	public double getTimestamp() {
+	public String getTimestamp() {
 		return timestamp;
 	}
 
-	public void setTimestamp(double timestamp) {
+	public void setTimestamp(String timestamp) {
 		this.timestamp = timestamp;
 	}
 

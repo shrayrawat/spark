@@ -14,8 +14,8 @@ public class DemandKafkaProducer extends KafkaProducerInitUtils {
 	private static String KAFKA_BROKER = "localhost:9092";
 	private static String topic = "demand_topic";
 	private static final long sleep = 101;
-	private static long maxRows=200;
-	private static String file = "/Users/srawat1/Desktop/traffic/testing_set/demand_data.csv";
+	private static long maxRows=50;
+	private static String file = "/Users/srawat1/Desktop/traffic/testing_set/demand_data_v3.csv";
 
 	public static void main(String[] args) throws InterruptedException, ExecutionException {
 

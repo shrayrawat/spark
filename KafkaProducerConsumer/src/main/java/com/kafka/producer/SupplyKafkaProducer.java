@@ -12,10 +12,10 @@ import com.kafka.producer.utils.KafkaProducerInitUtils;
 
 public class SupplyKafkaProducer extends KafkaProducerInitUtils {
 	private static String KAFKA_BROKER = "localhost:9092";
-	private static long maxRows=200;
+	private static long maxRows=50;
 	private static final String topic = "supply_topic";
 	private static final long sleep = 201;
-	private static final String file = "/Users/srawat1/Desktop/traffic/testing_set/supply_data_traffic2.csv";
+	private static final String file = "/Users/srawat1/Desktop/traffic/testing_set/supply_data_traffic_v3.csv";
 
 	public static void main(String[] args) throws InterruptedException, ExecutionException {
 		maxRows = 200;

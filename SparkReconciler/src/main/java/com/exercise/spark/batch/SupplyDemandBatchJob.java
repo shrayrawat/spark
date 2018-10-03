@@ -1,10 +1,13 @@
-package com.exercise.supplydemand;
+package com.exercise.spark.batch;
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
@@ -16,6 +19,7 @@ import org.apache.kafka.clients.producer.ProducerRecord;
 import org.apache.kafka.common.serialization.StringDeserializer;
 import org.apache.spark.api.java.JavaSparkContext;
 import org.apache.spark.api.java.function.Function;
+import org.apache.spark.api.java.function.PairFlatMapFunction;
 import org.apache.spark.api.java.function.PairFunction;
 import org.apache.spark.sql.SparkSession;
 import org.apache.spark.streaming.Duration;
@@ -29,7 +33,7 @@ import org.apache.spark.streaming.kafka010.LocationStrategies;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
-import com.commons.model.OutputRecordData;
+import com.commons.model.BatchRecord;
 import com.commons.util.WeatherUtil;
 import com.exercise.models.GenericTopicData;
 import com.exercise.util.Constants;
@@ -37,7 +41,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 
 import scala.Tuple2;
 
-public class CalculateRatioJob {
+public class SupplyDemandBatchJob {
 	static SparkSession spark;
 	static JSONParser parser = new JSONParser();
 	static Calendar cal = DateUtils.truncate(Calendar.getInstance(), Calendar.MINUTE);
@@ -46,9 +50,9 @@ public class CalculateRatioJob {
 		spark = SparkSession.builder().config("spark.master", "local").getOrCreate();
 		spark.sparkContext().setLogLevel("ERROR");
 		JavaStreamingContext streamingContext = new JavaStreamingContext(
-				JavaSparkContext.fromSparkContext(spark.sparkContext()), new Duration(120000));
+				JavaSparkContext.fromSparkContext(spark.sparkContext()), new Duration(20000));
 
-		String checkpointPath = File.separator + "tmp" + File.separator + "CAA4" + File.separator + "checkpoints4";
+		String checkpointPath = File.separator + "tmp" + File.separator + "CAA44" + File.separator + "checkpoints4";
 		File checkpointDir = new File(checkpointPath);
 		checkpointDir.mkdir();
 		checkpointDir.deleteOnExit();
@@ -58,7 +62,7 @@ public class CalculateRatioJob {
 		kafkaParams.put("bootstrap.servers", "localhost:9092");
 		kafkaParams.put("key.deserializer", StringDeserializer.class);
 		kafkaParams.put("value.deserializer", StringDeserializer.class);
-		kafkaParams.put("group.id", "use_a_separate_group_id_for_each_stream4");
+		kafkaParams.put("group.id", "batch_job");
 		kafkaParams.put("auto.offset.reset", "latest");
 		kafkaParams.put("enable.auto.commit", false);
 		Collection<String> topics = Arrays.asList(Constants.COMMON_TOPIC);
@@ -91,7 +95,28 @@ public class CalculateRatioJob {
 	private static void reduceByKeyFunc(JavaPairDStream<String, GenericTopicData> geoToUserData) {
 		JavaPairDStream<String, Iterable<GenericTopicData>> supplyGroupedKeys = geoToUserData.groupByKey();
 		supplyGroupedKeys.print();
-		supplyGroupedKeys.map(new Function<Tuple2<String, Iterable<GenericTopicData>>, String>() {
+
+		JavaPairDStream<String, GenericTopicData> segregatedAcctoTsList = supplyGroupedKeys.flatMapToPair(
+				new PairFlatMapFunction<Tuple2<String, Iterable<GenericTopicData>>, String, GenericTopicData>() {
+
+					@Override
+					public Iterator<Tuple2<String, GenericTopicData>> call(
+							Tuple2<String, Iterable<GenericTopicData>> arg0) throws Exception {
+						List<Tuple2<String, GenericTopicData>> list = new ArrayList<>();
+						for (GenericTopicData data : arg0._2()) {
+							Tuple2<String, GenericTopicData> tuple = new Tuple2<String, GenericTopicData>(
+									arg0._1 + "_" + data.getTimestamp(), data);
+							list.add(tuple);
+						}
+						return list.iterator();
+					}
+				});
+
+		segregatedAcctoTsList.print();
+
+		segregatedAcctoTsList.groupByKey().print();
+
+		segregatedAcctoTsList.groupByKey().map(new Function<Tuple2<String, Iterable<GenericTopicData>>, String>() {
 
 			@Override
 			public String call(Tuple2<String, Iterable<GenericTopicData>> arg0) throws Exception {
@@ -105,11 +130,8 @@ public class CalculateRatioJob {
 						demand = demand + data.getRequestSize();
 					}
 				}
-				double ratio = -1d;
-				if (demand > 0)
-					ratio = (double) supply / demand;
 				String weatherInfo = WeatherUtil.getWeatherInfo(arg0._1);
-				OutputRecordData record = new OutputRecordData(supply, demand, ratio, weatherInfo);
+				BatchRecord record = new BatchRecord(arg0._1.split("_")[0], arg0._1.split("_")[1] + "", supply, demand, weatherInfo);
 				ObjectMapper mapper = new ObjectMapper();
 				String jsonInString = mapper.writeValueAsString(record);
 				Properties props = new Properties();
@@ -123,14 +145,60 @@ public class CalculateRatioJob {
 				props.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
 				props.put("value.serializer", "org.apache.kafka.common.serialization.ByteArraySerializer");
 				Producer<String, byte[]> producer = new KafkaProducer(props);
-				String topic = "final_demand_supply_topic";
+				String topic = "batch_demand_supply_topic";
 				// producer.send(new ProducerRecord<String,
 				// GenericTopicData>());
-				producer.send(new ProducerRecord<String, byte[]>(topic, arg0._1, jsonInString.toString().getBytes()));
+				producer.send(new ProducerRecord<String, byte[]>(topic, arg0._1.split("_")[0],
+						jsonInString.toString().getBytes()));
 				return "";
 
 			}
 		}).count().print();
+
+		// supplyGroupedKeys.map(new Function<Tuple2<String,
+		// Iterable<GenericTopicData>>, String>() {
+		//
+		// @Override
+		// public String call(Tuple2<String, Iterable<GenericTopicData>> arg0)
+		// throws Exception {
+		// int supply = 0;
+		// int demand = 0;
+		// System.out.println(arg0._1);
+		// for (GenericTopicData data : arg0._2()) {
+		// if (data.getRequestName().equals("S")) {
+		// supply = supply + data.getRequestSize();
+		// } else if (data.getRequestName().equals("D")) {
+		// demand = demand + data.getRequestSize();
+		// }
+		// }
+		// String weatherInfo = WeatherUtil.getWeatherInfo(arg0._1);
+		// BatchRecord record = new BatchRecord(arg0._1, cal.getTime().getTime()
+		// + "", supply, demand,
+		// weatherInfo);
+		// ObjectMapper mapper = new ObjectMapper();
+		// String jsonInString = mapper.writeValueAsString(record);
+		// Properties props = new Properties();
+		// props.put("bootstrap.servers", "localhost:9092");
+		// props.put("acks", "all");
+		// props.put("retries", 0);
+		// props.put("batch.size", 16384);
+		// props.put("linger.ms", 1);
+		// props.put("request.timeout.ms", 60000);
+		// props.put("buffer.memory", 33554432);
+		// props.put("key.serializer",
+		// "org.apache.kafka.common.serialization.StringSerializer");
+		// props.put("value.serializer",
+		// "org.apache.kafka.common.serialization.ByteArraySerializer");
+		// Producer<String, byte[]> producer = new KafkaProducer(props);
+		// String topic = "batch_demand_supply_topic";
+		// // producer.send(new ProducerRecord<String,
+		// // GenericTopicData>());
+		// producer.send(new ProducerRecord<String, byte[]>(topic, arg0._1,
+		// jsonInString.toString().getBytes()));
+		// return "";
+		//
+		// }
+		// }).count().print();
 
 	}
 
@@ -154,7 +222,7 @@ public class CalculateRatioJob {
 	}
 
 	public static void main(String[] args) {
-		CalculateRatioJob.readFromKafkaTopic();
+		SupplyDemandBatchJob.readFromKafkaTopic();
 		// Thread sparkStreamingThread = new Thread(new Runnable() {
 		//
 		// @Override

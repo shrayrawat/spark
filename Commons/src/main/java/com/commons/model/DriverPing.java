@@ -1,13 +1,17 @@
 package com.commons.model;
 
-import com.github.davidmoten.geo.LatLong;
+import java.io.Serializable;
 
-public class DriverPing {
+public class DriverPing implements Serializable {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 	private String driverId;
-	private LatLong position;
+	private LatAndLong position;
 	private Long timestamp;
 
-	public DriverPing(String driverId, LatLong position, Long timestamp) {
+	public DriverPing(String driverId, LatAndLong position, Long timestamp) {
 		super();
 		this.driverId = driverId;
 		this.position = position;
@@ -18,7 +22,7 @@ public class DriverPing {
 		return driverId;
 	}
 
-	public LatLong getPosition() {
+	public LatAndLong getPosition() {
 		return position;
 	}
 

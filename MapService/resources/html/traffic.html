@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <style>
+    #map {
+      height: 900px;
+      width: 100%;
+    }
+  </style>
+</head>
+
+<body>
+  <h3>Traffic Geo Visualization</h3>
+  <div id="map"></div>
+  <script>
+    var l = document.createElement("a");
+    l.href = window.location.href;
+    var host = l.host;
+    // var host = getUrlVars()["host"];
+    var gs_url = 'http://' + host;
+
+
+    console.log('GS url - ' + gs_url);
+
+    var map, infowindow, clientId, intervalId;
+
+    function initMap() {
+      var nyc = {
+        lat: 40.71258545,
+        lng: -73.94348145
+      };
+      map = new google.maps.Map(document.getElementById('map'), {
+        zoom: 12,
+        center: nyc
+      });
+
+      clientId = uuid();
+      resetEndPoint();
+      intervalId = setInterval(addMarkers, 500);
+      console.log("End of initMap");
+    }
+
+    function resetEndPoint() {
+      var x = new XMLHttpRequest();
+      x.open("PATCH", gs_url + '/service/topic/traffic_output/reset?clientId=' + clientId);
+      x.send(null);
+    }
+
+    function addMarkers() {
+      var response = Get(gs_url + '/service/topic/traffic_output/next?clientId=' + clientId);
+
+      if (isEmpty(response)) {
+        console.log("Response is empty");
+        console.log("Clearing the interval");
+        // clearInterval(intervalId);
+        return;
+      }
+
+      var json_obj = JSON.parse(response);
+
+      var lat = json_obj.latitude;
+      var lon = json_obj.longitude;
+      var desc = json_obj.description;
+
+      var new_pos = new google.maps.LatLng(lat, lon);
+
+      console.log("new_pos->" + new_pos);
+
+      var infowindow = new google.maps.InfoWindow({
+        content: '<b>' + desc + '</b>',
+        maxWidth: 200
+      });
+
+      var marker = new google.maps.Marker({
+        position: new_pos,
+        map: map,
+        // animation: google.maps.Animation.DROP,
+        title: 'some desc'
+      });
+      marker.setIcon('http://maps.google.com/mapfiles/ms/icons/orange-dot.png')
+
+      marker.addListener('click', function() {
+        infowindow.open(map, marker);
+      });
+    }
+
+    function Get(yourUrl) {
+      var Httpreq = new XMLHttpRequest(); // a new request
+      Httpreq.open("GET", yourUrl, false);
+      Httpreq.send(null);
+      if (Httpreq.status == 200) {
+        console.log(Httpreq.responseText);
+        return Httpreq.responseText;
+      }
+      console.log("Response status :" + Httpreq.status);;
+      return '';
+    }
+
+    function isEmpty(str) {
+      return (!str || 0 === str.length);
+    }
+
+    function uuid() {
+      return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+        var r = Math.random() * 16 | 0,
+          v = c == 'x' ? r : (r & 0x3 | 0x8);
+        return v.toString(16);
+      });
+    }
+
+    function getUrlVars() {
+      var vars = {};
+      var parts = window.location.href.replace(/[?&]+([^=&]+)=([^&]*)/gi, function(m, key, value) {
+        vars[key] = value;
+      });
+      return vars;
+    }
+  </script>
+  <script async defer src="https://maps.googleapis.com/maps/api/js?key=AIzaSyDljLxlMe5-Fy_ZBh3z3yJbF5qWDfKCnJg&callback=initMap">
+  </script>
+</body>
+
+</html>
