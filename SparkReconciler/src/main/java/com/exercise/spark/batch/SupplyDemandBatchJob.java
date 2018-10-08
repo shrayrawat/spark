@@ -6,10 +6,12 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
 
 import org.apache.commons.lang.time.DateUtils;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
@@ -30,6 +32,7 @@ import org.apache.spark.streaming.api.java.JavaStreamingContext;
 import org.apache.spark.streaming.kafka010.ConsumerStrategies;
 import org.apache.spark.streaming.kafka010.KafkaUtils;
 import org.apache.spark.streaming.kafka010.LocationStrategies;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
@@ -44,13 +47,15 @@ import scala.Tuple2;
 public class SupplyDemandBatchJob {
 	static SparkSession spark;
 	static JSONParser parser = new JSONParser();
-	static Calendar cal = DateUtils.truncate(Calendar.getInstance(), Calendar.MINUTE);
 
 	public static void readFromKafkaTopic() {
-		spark = SparkSession.builder().config("spark.master", "local").getOrCreate();
+		spark = SparkSession.builder().config("spark.master", "local")
+				.config("spark.streaming.backpressure.enabled", "true")
+				.config("spark.streaming.kafka.maxRatePerPartition", 500)
+				.config("spark.streaming.backpressure.initialRate", 500).getOrCreate();
 		spark.sparkContext().setLogLevel("ERROR");
 		JavaStreamingContext streamingContext = new JavaStreamingContext(
-				JavaSparkContext.fromSparkContext(spark.sparkContext()), new Duration(20000));
+				JavaSparkContext.fromSparkContext(spark.sparkContext()), new Duration(240000));
 
 		String checkpointPath = File.separator + "tmp" + File.separator + "CAA44" + File.separator + "checkpoints4";
 		File checkpointDir = new File(checkpointPath);
@@ -65,7 +70,7 @@ public class SupplyDemandBatchJob {
 		kafkaParams.put("group.id", "batch_job");
 		kafkaParams.put("auto.offset.reset", "latest");
 		kafkaParams.put("enable.auto.commit", false);
-		Collection<String> topics = Arrays.asList(Constants.COMMON_TOPIC);
+		Collection<String> topics = Arrays.asList(Constants.COMMON_TOPIC_BATCH);
 
 		final JavaInputDStream<ConsumerRecord<String, String>> stream = KafkaUtils.createDirectStream(streamingContext,
 				LocationStrategies.PreferConsistent(),
@@ -93,6 +98,9 @@ public class SupplyDemandBatchJob {
 	}
 
 	private static void reduceByKeyFunc(JavaPairDStream<String, GenericTopicData> geoToUserData) {
+		/*
+		 * Group multiple records according to geohash
+		 */
 		JavaPairDStream<String, Iterable<GenericTopicData>> supplyGroupedKeys = geoToUserData.groupByKey();
 		supplyGroupedKeys.print();
 
@@ -123,15 +131,21 @@ public class SupplyDemandBatchJob {
 				int supply = 0;
 				int demand = 0;
 				System.out.println(arg0._1);
+				Set<String> supplySet = new HashSet<>();
+				Set<String> demandSet = new HashSet<>();
 				for (GenericTopicData data : arg0._2()) {
 					if (data.getRequestName().equals("S")) {
-						supply = supply + data.getRequestSize();
+						supplySet.addAll(data.getRequestSet());
 					} else if (data.getRequestName().equals("D")) {
-						demand = demand + data.getRequestSize();
+						demandSet.addAll(data.getRequestSet());
 					}
 				}
+				supply = supplySet.size();
+				demand = demandSet.size();
 				String weatherInfo = WeatherUtil.getWeatherInfo(arg0._1);
-				BatchRecord record = new BatchRecord(arg0._1.split("_")[0], arg0._1.split("_")[1] + "", supply, demand, weatherInfo);
+				Calendar cal = DateUtils.truncate(Calendar.getInstance(), Calendar.MINUTE);
+				BatchRecord record = new BatchRecord(arg0._1.split("_")[0], cal.getTime().getTime() + "", supply,
+						demand, weatherInfo);
 				ObjectMapper mapper = new ObjectMapper();
 				String jsonInString = mapper.writeValueAsString(record);
 				Properties props = new Properties();
@@ -145,7 +159,7 @@ public class SupplyDemandBatchJob {
 				props.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
 				props.put("value.serializer", "org.apache.kafka.common.serialization.ByteArraySerializer");
 				Producer<String, byte[]> producer = new KafkaProducer(props);
-				String topic = "batch_demand_supply_topic";
+				String topic = Constants.OUTPUT_TOPIC_BATCH;
 				// producer.send(new ProducerRecord<String,
 				// GenericTopicData>());
 				producer.send(new ProducerRecord<String, byte[]>(topic, arg0._1.split("_")[0],
@@ -213,8 +227,9 @@ public class SupplyDemandBatchJob {
 						long requestSize = (long) jsonObject.get("requestSize");
 						String timestamp = (String) jsonObject.get("timestamp");
 						String requestName = (String) jsonObject.get("requestName");
+						Set<String> requestSet = new HashSet<String>((JSONArray) jsonObject.get("requestSet"));
 						return new Tuple2<String, GenericTopicData>(geoHash,
-								new GenericTopicData(geoHash, timestamp, (int) requestSize, requestName));
+								new GenericTopicData(geoHash, timestamp, (int) requestSize, requestName, requestSet));
 					}
 				});
 		pair.print();

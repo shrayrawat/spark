@@ -14,23 +14,15 @@ public class DemandKafkaProducer extends KafkaProducerInitUtils {
 	private static String KAFKA_BROKER = "localhost:9092";
 	private static String topic = "demand_topic";
 	private static final long sleep = 101;
-	private static long maxRows=50;
-	private static String file = "/Users/srawat1/Desktop/traffic/testing_set/demand_data_v3.csv";
+	private static long maxRows = 200;
+	private static String file2 = "/Users/srawat1/Desktop/traffic/testing_set/demand_data_v3.csv";
+	private static String file = "/Users/srawat1/Desktop/traffic/testing_set/demand_set2.csv";
 
 	public static void main(String[] args) throws InterruptedException, ExecutionException {
 
-//		if (args.length != 4) {
-//			System.out.println(
-//					"Usage : package.MainClass <data_file> <topic_name> <kafka_brokers> <rows(-1 to load all rows)>");
-//			System.exit(1);
-//		}
-
-		// file = args[0];
-		file = "/Users/srawat1/Desktop/traffic/testing_set/demand_data.csv";
-		// topic = args[1];
-		// KAFKA_BROKER = args[2];
-		// maxRows = Long.parseLong(args[3]);
-		maxRows = 200;
+		System.out.println(args[0]);
+		file = args[0];
+		maxRows = 5000;
 		if (maxRows < 0)
 			maxRows = Long.MAX_VALUE;
 		new DemandKafkaProducer().run();

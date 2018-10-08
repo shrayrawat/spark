@@ -24,11 +24,11 @@ import org.json.simple.parser.JSONParser;
 
 public class KafkaBatchConsumer {
 
-	private final String topic;
-	private final String bootstrapServers;
-	private final String clientId;
+	private static String topic;
+	private static String bootstrapServers;
+	private static String clientId;
 
-	private Consumer<String, String> consumer;
+	private static Consumer<String, String> consumer;
 
 	public KafkaBatchConsumer(String bootstrapServers, String topic, String clientId) {
 		this.bootstrapServers = bootstrapServers;
@@ -57,7 +57,7 @@ public class KafkaBatchConsumer {
 		this.consumer = consumer;
 	}
 
-	public void reset() {
+	public static void reset() {
 		System.out.println("Resetting kafka consumer for " + topic);
 		TopicPartition tp = new TopicPartition(topic, 0);
 		consumer.seekToBeginning(Arrays.asList(tp));
@@ -84,13 +84,15 @@ public class KafkaBatchConsumer {
 	}
 
 	public static void main(String[] args) {
-		KafkaBatchConsumer test = new KafkaBatchConsumer("localhost:9092", "batch_demand_supply_topic", "batch_group");
+		KafkaBatchConsumer test = new KafkaBatchConsumer("localhost:9092", "batch_demand_supply_output_topic", "batch_group");
 		Map<String, String> records = null;
 		JSONParser parser = new JSONParser();
 		Statement stmt = null;
 		String url = "jdbc:mysql://localhost:3306/batch_supply_demand_db";
 		String username = "root";
-		String password = "Intuit_18";
+		//String password = "Intuit_18";
+		String password="root";
+		//reset();
 		Connection conn;
 		try {
 			conn = DriverManager.getConnection(url, username, password);

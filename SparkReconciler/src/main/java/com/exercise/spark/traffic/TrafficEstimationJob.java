@@ -56,7 +56,7 @@ public class TrafficEstimationJob {
 		spark = SparkSession.builder().config("spark.master", "local").getOrCreate();
 		spark.sparkContext().setLogLevel("ERROR");
 		JavaStreamingContext streamingContext = new JavaStreamingContext(
-				JavaSparkContext.fromSparkContext(spark.sparkContext()), new Duration(10000));
+				JavaSparkContext.fromSparkContext(spark.sparkContext()), new Duration(240000));
 
 		// String checkpointPath = File.separator + "tmp" + File.separator +
 		// "CAA2" + File.separator + "checkpoints2";
@@ -72,7 +72,7 @@ public class TrafficEstimationJob {
 		kafkaParams2.put("group.id", "use_a_separate_group_id_for_each_stream_5");
 		kafkaParams2.put("auto.offset.reset", "latest");
 		kafkaParams2.put("enable.auto.commit", false);
-		Collection<String> topics2 = Arrays.asList(Constants.SUPPLY_TOPIC);
+		Collection<String> topics2 = Arrays.asList(Constants.SUPPLY_TOPIC_TRAFFIC);
 
 		final JavaInputDStream<ConsumerRecord<String, String>> stream2 = KafkaUtils.createDirectStream(streamingContext,
 				LocationStrategies.PreferConsistent(),
@@ -146,7 +146,7 @@ public class TrafficEstimationJob {
 				props.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
 				props.put("value.serializer", "org.apache.kafka.common.serialization.ByteArraySerializer");
 				Producer<String, byte[]> producer = new KafkaProducer(props);
-				String topic = "traffic_output";
+				String topic = Constants.TRAFFIC_OUTPUT_TOPIC;
 
 				Iterator<Map<String, List<Double>>> iter = arg0.toLocalIterator();
 				while (iter.hasNext()) {

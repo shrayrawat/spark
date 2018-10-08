@@ -33,6 +33,7 @@ import org.json.simple.parser.JSONParser;
 import com.commons.util.GeoHashUtil;
 import com.exercise.models.GenericTopicData;
 import com.exercise.util.Constants;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import scala.Tuple2;
 
@@ -42,11 +43,13 @@ public class DemandJob {
 	static Calendar cal = DateUtils.truncate(Calendar.getInstance(), Calendar.MINUTE);
 
 	public static void readFromKafkaTopic() {
-		spark = SparkSession.builder().config("spark.master", "local").getOrCreate();
+		spark = SparkSession.builder().config("spark.master", "local")
+				.config("spark.streaming.backpressure.enabled", "true")
+				.config("spark.streaming.kafka.maxRatePerPartition", 50).getOrCreate();
 		// .config("spark.streaming.kafka.maxRatePerPartition", "1")
 		spark.sparkContext().setLogLevel("ERROR");
 		JavaStreamingContext streamingContext = new JavaStreamingContext(
-				JavaSparkContext.fromSparkContext(spark.sparkContext()), new Duration(10000));
+				JavaSparkContext.fromSparkContext(spark.sparkContext()), new Duration(5000));
 		// String checkpointPath = File.separator + "tmp" + File.separator +
 		// "CAA" + File.separator + "checkpoints";
 		// File checkpointDir = new File(checkpointPath);
@@ -111,10 +114,11 @@ public class DemandJob {
 				props.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
 				props.put("value.serializer", "org.apache.kafka.common.serialization.ByteArraySerializer");
 				Producer<String, byte[]> producer = new KafkaProducer(props);
-				String topic = "unified_topic";
-				producer.send(new ProducerRecord<String, byte[]>(topic,
-						new GenericTopicData(arg0._1(), cal.getTime().getTime() + "", demandSet.size(), "D").toString()
-								.getBytes()));
+				String topic = Constants.COMMON_TOPIC_BATCH;
+				ObjectMapper mapper = new ObjectMapper();
+				String jsonInString = mapper.writeValueAsString(new GenericTopicData(arg0._1(),
+						cal.getTime().getTime() + "", demandSet.size(), "D", demandSet));
+				producer.send(new ProducerRecord<String, byte[]>(topic, jsonInString.getBytes()));
 				return "";
 
 			}

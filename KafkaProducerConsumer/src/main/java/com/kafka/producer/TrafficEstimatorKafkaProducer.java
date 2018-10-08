@@ -12,11 +12,13 @@ import com.kafka.producer.utils.KafkaProducerInitUtils;
 
 public class TrafficEstimatorKafkaProducer extends KafkaProducerInitUtils {
 	private static String KAFKA_BROKER = "localhost:9092";
-	private static final String topic = "supply_topic2";
+	private static final String topic = "supply_topic_traffic";
 	private static final long sleep = 10l;
-	private static final String file = "";
+	private static String file = "/Users/srawat1/Desktop/traffic/testing_set/supply_data_traffic_v3.csv";
 
 	public static void main(String[] args) throws InterruptedException, ExecutionException {
+		System.out.println(args[0]);
+		file = args[0];
 		new TrafficEstimatorKafkaProducer().run();
 	}
 
@@ -28,6 +30,7 @@ public class TrafficEstimatorKafkaProducer extends KafkaProducerInitUtils {
 			while ((sCurrentLine = br.readLine()) != null) {
 				producer.send(new ProducerRecord<String, String>(topic, sCurrentLine)).get();
 				sent++;
+				System.out.println("sent = " + sent);
 				if (sent == 3000)
 					break;
 				Thread.sleep(sleep);

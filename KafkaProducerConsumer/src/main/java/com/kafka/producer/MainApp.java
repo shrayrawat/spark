@@ -20,8 +20,12 @@ public class MainApp {
 			}
 		});
 		sparkStreamingThread.start();
-	//
+		//
+		long startTime = System.nanoTime();
 		new DemandKafkaProducer().run();
+		long endTime = System.nanoTime();
+		long totalTime = endTime - startTime;
+		System.out.println(totalTime / 1000000000);
 
 	}
 

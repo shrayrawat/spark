@@ -20,16 +20,26 @@ public class TrafficDataUtil extends DataUtilV2 {
 	private static final String SEPARATOR = ",";
 	private static final String ID_PREFIX = "DR";
 	private static final Long INITIAL_ID = 88000l;
-	private static final String OUTPUT_FILE = "/Users/srawat1/Desktop/traffic/supply_data_traffic_v3.csv";
+	//private static final String OUTPUT_FILE = "/Users/srawat1/Desktop/traffic/supply_data_traffic_v3.csv";
+	//private static final String INPUT_FILE = "/Users/srawat1/Desktop/traffic/test_set3";
+	
+	private static final String OUTPUT_FILE = "/Users/srawat1/Desktop/traffic/testing_set/supply_data_traffic_v3.csv";
 	private static final String INPUT_FILE = "/Users/srawat1/Desktop/traffic/test_set3";
+	private static final String INPUT_FILE2 = "/Users/srawat1/Desktop/traffic/one_set";
+	private static final String INPUT_FILE3 = "/Users/srawat1/Desktop/traffic/test_set2";
+	private static final String INPUT_FILE4 = "/Users/srawat1/Desktop/traffic/two_set";
+	private static final String OUTPUT_FILE2 = "/Users/srawat1/Desktop/traffic/testing_set/supply_data_one_set.csv";
+	private static final String OUTPUT_FILE3 = "/Users/srawat1/Desktop/traffic/testing_set/supply_data_set2.csv";
+	private static final String OUTPUT_FILE4 = "/Users/srawat1/Desktop/traffic/testing_set/supply_data_two_set.csv";
+	
+	
 	public static final String ID_KEY = "driver_id";
 	private static Map<String, List<String>> geoMap = new HashMap();
-	private static final int totalDrivers = 23;
 	static final double rangeMin = 0.3;
 	static final double rangeMax = 2.0;
 
 	public static void main(String[] args) throws JsonProcessingException {
-		List<String> rows = new Reader().read(INPUT_FILE);
+		List<String> rows = new Reader().read(INPUT_FILE4);
 		System.out.println("rows = " + rows);
 		List<String> transformed = transform(rows);
 		System.out.println("transformed = " + transformed.size());
@@ -42,7 +52,7 @@ public class TrafficDataUtil extends DataUtilV2 {
 					System.out.println(String.format("%s^%s", key, geoMap.get(key)));
 			}
 		}
-		new Writer().write(OUTPUT_FILE, transformed);
+		new Writer().write(OUTPUT_FILE4, transformed);
 	}
 
 	public static List<String> transform(List<String> geohashList) throws JsonProcessingException {

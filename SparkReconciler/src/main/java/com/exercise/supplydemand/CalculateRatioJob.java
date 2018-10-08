@@ -5,8 +5,10 @@ import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Properties;
+import java.util.Set;
 
 import org.apache.commons.lang.time.DateUtils;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
@@ -26,6 +28,7 @@ import org.apache.spark.streaming.api.java.JavaStreamingContext;
 import org.apache.spark.streaming.kafka010.ConsumerStrategies;
 import org.apache.spark.streaming.kafka010.KafkaUtils;
 import org.apache.spark.streaming.kafka010.LocationStrategies;
+import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
 
@@ -43,10 +46,13 @@ public class CalculateRatioJob {
 	static Calendar cal = DateUtils.truncate(Calendar.getInstance(), Calendar.MINUTE);
 
 	public static void readFromKafkaTopic() {
-		spark = SparkSession.builder().config("spark.master", "local").getOrCreate();
+		spark = SparkSession.builder().config("spark.master", "local")
+				.config("spark.streaming.backpressure.enabled", "true")
+				.config("spark.streaming.kafka.maxRatePerPartition", 500)
+				.config("spark.streaming.backpressure.initialRate", 500).getOrCreate();
 		spark.sparkContext().setLogLevel("ERROR");
 		JavaStreamingContext streamingContext = new JavaStreamingContext(
-				JavaSparkContext.fromSparkContext(spark.sparkContext()), new Duration(120000));
+				JavaSparkContext.fromSparkContext(spark.sparkContext()), new Duration(240000));
 
 		String checkpointPath = File.separator + "tmp" + File.separator + "CAA4" + File.separator + "checkpoints4";
 		File checkpointDir = new File(checkpointPath);
@@ -61,7 +67,7 @@ public class CalculateRatioJob {
 		kafkaParams.put("group.id", "use_a_separate_group_id_for_each_stream4");
 		kafkaParams.put("auto.offset.reset", "latest");
 		kafkaParams.put("enable.auto.commit", false);
-		Collection<String> topics = Arrays.asList(Constants.COMMON_TOPIC);
+		Collection<String> topics = Arrays.asList(Constants.COMMON_TOPIC_RT);
 
 		final JavaInputDStream<ConsumerRecord<String, String>> stream = KafkaUtils.createDirectStream(streamingContext,
 				LocationStrategies.PreferConsistent(),
@@ -97,14 +103,18 @@ public class CalculateRatioJob {
 			public String call(Tuple2<String, Iterable<GenericTopicData>> arg0) throws Exception {
 				int supply = 0;
 				int demand = 0;
+				Set<String> supplySet = new HashSet<>();
+				Set<String> demandSet = new HashSet<>();
 				System.out.println(arg0._1);
 				for (GenericTopicData data : arg0._2()) {
 					if (data.getRequestName().equals("S")) {
-						supply = supply + data.getRequestSize();
+						supplySet.addAll(data.getRequestSet());
 					} else if (data.getRequestName().equals("D")) {
-						demand = demand + data.getRequestSize();
+						demandSet.addAll(data.getRequestSet());
 					}
 				}
+				supply = supplySet.size();
+				demand = demandSet.size();
 				double ratio = -1d;
 				if (demand > 0)
 					ratio = (double) supply / demand;
@@ -123,7 +133,7 @@ public class CalculateRatioJob {
 				props.put("key.serializer", "org.apache.kafka.common.serialization.StringSerializer");
 				props.put("value.serializer", "org.apache.kafka.common.serialization.ByteArraySerializer");
 				Producer<String, byte[]> producer = new KafkaProducer(props);
-				String topic = "final_demand_supply_topic";
+				String topic = Constants.SUPPLY_DEMAND_OUTPUT_TOPIC;
 				// producer.send(new ProducerRecord<String,
 				// GenericTopicData>());
 				producer.send(new ProducerRecord<String, byte[]>(topic, arg0._1, jsonInString.toString().getBytes()));
@@ -145,8 +155,11 @@ public class CalculateRatioJob {
 						long requestSize = (long) jsonObject.get("requestSize");
 						String timestamp = (String) jsonObject.get("timestamp");
 						String requestName = (String) jsonObject.get("requestName");
+						// JSONArray array = (JSONArray)
+						// jsonObject.get("requestSet");
+						Set<String> requestSet = new HashSet<String>((JSONArray) jsonObject.get("requestSet"));
 						return new Tuple2<String, GenericTopicData>(geoHash,
-								new GenericTopicData(geoHash, timestamp, (int) requestSize, requestName));
+								new GenericTopicData(geoHash, timestamp, (int) requestSize, requestName, requestSet));
 					}
 				});
 		pair.print();

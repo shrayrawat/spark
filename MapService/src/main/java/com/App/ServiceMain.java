@@ -18,8 +18,10 @@ import io.dropwizard.setup.Environment;
 
 public class ServiceMain extends Application<ServiceConfig> {
 	public static void main(String[] args) throws Exception {
-		// new ServiceMain().run(new String[] { args[0], args[1] });
-		new ServiceMain().run("server", "resources/config.yml");
+		System.out.println(args[0]);
+		System.out.println(args[1]);
+		new ServiceMain().run(new String[] { args[0], args[1] });
+		// new ServiceMain().run("server", "resources/config.yml");
 		String cwd = System.getProperty("user.dir");
 		System.out.println(cwd);
 	}

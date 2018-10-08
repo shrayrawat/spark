@@ -25,8 +25,14 @@ public class DataUtilV2 {
 	private static final String SEPARATOR = ",";
 	private static final String ID_PREFIX = "CT";
 	private static final Long INITIAL_ID = 77000l;
-	private static final String OUTPUT_FILE = "/Users/srawat1/Desktop/traffic/demand_data_v3.csv";
+	private static final String OUTPUT_FILE = "/Users/srawat1/Desktop/traffic/testing_set/demand_data_v3.csv";
 	private static final String INPUT_FILE = "/Users/srawat1/Desktop/traffic/test_set3";
+	private static final String INPUT_FILE2 = "/Users/srawat1/Desktop/traffic/one_set";
+	private static final String INPUT_FILE3 = "/Users/srawat1/Desktop/traffic/test_set2";
+	private static final String INPUT_FILE4 = "/Users/srawat1/Desktop/traffic/two_set";
+	private static final String OUTPUT_FILE2 = "/Users/srawat1/Desktop/traffic/testing_set/demand_one_set.csv";
+	private static final String OUTPUT_FILE3 = "/Users/srawat1/Desktop/traffic/testing_set/demand_set2.csv";
+	private static final String OUTPUT_FILE4 = "/Users/srawat1/Desktop/traffic/testing_set/demand_two_set.csv";
 
 	public static final String ID_KEY = "customer_id";
 	private static Map<String, List<String>> geoMap = new HashMap();
@@ -34,12 +40,12 @@ public class DataUtilV2 {
 	static final double rangeMax = 2.0;
 
 	public static void main(String[] args) throws JsonProcessingException {
-		List<String> rows = new Reader().read(INPUT_FILE);
+		List<String> rows = new Reader().read(INPUT_FILE4);
 		List<String> transformed = transform(rows);
 
 		System.out.println("transformed = " + transformed.size());
 		System.out.println("geoSet = " + geoMap.size());
-		new Writer().write(OUTPUT_FILE, transformed);
+		new Writer().write(OUTPUT_FILE4, transformed);
 	}
 
 	private static List<String> transform(List<String> geohashList) throws JsonProcessingException {

@@ -20,8 +20,8 @@
 //	private static final String SEPARATOR = ",";
 //	private static final String ID_PREFIX = "CT";
 //	private static final Long INITIAL_ID = 11000l;
-//	private static final String OUTPUT_FILE = "/Users/srawat1/Desktop/traffic/demand_data.csv";
-//	private static final String INPUT_FILE = "/Users/srawat1/Desktop/traffic/green_tripdata_2018-01.csv";
+//	private static final String OUTPUT_FILE = "/Users/srawat1/Desktop/traffic/check.csv";
+//	private static final String INPUT_FILE = "/Users/srawat1/Desktop/traffic/green_tripdata_2016-01.csv";
 //	public static final String ID_KEY = "customer_id";
 //	private static Set<String> geoSet = new HashSet();
 //
